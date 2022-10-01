@@ -51,7 +51,7 @@ Function Configura-3cx{
 
     #abrindo aplicativo:
     # Acessa a pasta do aplicativo para executar e criar as pastas.
-    Cd "C:\Program Files (x86)\3CXPhone" 
+    Cd "{O caminho do app}\3CXPhone" 
 
     # Inicia o app
     Start -WindowStyle Minimized 3CXPhone.exe  
@@ -78,7 +78,7 @@ Function Configura-3cx{
     # Buscar a baia para copiar a configuração correta
     # Deve se manter o arquivo ponteiro sempre atualizado, neste caso o baias_et.txt é atualizado a cada 1 minuto.
     # Busca a baia da máquina
-    $linha = Cat \\pr6534et012\CONFIG3CX\DADOS\baias_et.txt | Select-String -Pattern $hostname 
+    $linha = Cat {"O caminho desejado"}\baias_et.txt | Select-String -Pattern $hostname 
 
     # Splita a linha
     $linha = $linha -split ',',0 
@@ -87,7 +87,9 @@ Function Configura-3cx{
     $baia = $linha[0] 
 
     # Copia os arquivos de configuração da pasta para a máquina.
-    cp -Recurse \\pr6534et012\CONFIG3CX\BAIAS\$baia\* "c:\users\$user\AppData\Local\3CX VoIP Phone"
+    # Aqui vemos que o comando vai procurar o arquivo de configuração dentro de uma pasta.
+    # Pode ser usado o script Gera_arquivo_configuracao.ps1 para criar as pastas com baia e o arquivo de configuração dentro delas.
+    cp -Recurse {"O caminho desejado"}\$baia\* "c:\users\$user\AppData\Local\3CX VoIP Phone"
 
     echo "configurado com sucesso"
 }
@@ -123,7 +125,7 @@ Function Instala-3cx{
             se sim: irá parar o loop e começar a configuração.
             se não: continuara esperando. #>
 
-        if (Test-path -path "C:\Program Files (x86)\3CXPhone\3CXPhone.exe"){
+        if (Test-path -path "{O caminho do app}\3CXPhone\3CXPhone.exe"){
             echo "Instalação bem sucedida"
             $count = 1
         }
@@ -146,7 +148,7 @@ Function Instala-3cx{
     iniciamos verificando se o app está istalado com um Test-Path.
     se sim: irá iniciar o script.
     se não: por hora só ira fechar. #>
-if (Test-path -path "C:\Program Files (x86)\3CXPhone\3CXPhone.exe"){
+if (Test-path -path "{O caminho do app}\3CXPhone\3CXPhone.exe"){
     
     # O teste lógico verificou que o caminho existe e irá executar a função abaixo.
     # Chamamos a função de configuração
